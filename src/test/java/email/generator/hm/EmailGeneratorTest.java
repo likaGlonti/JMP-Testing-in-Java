@@ -1,10 +1,8 @@
 package email.generator.hm;
 
+import email.generator.hm.exception.ArgumentMissingForMailGeneratorException;
 import email.generator.hm.mock.GeneratedEmailsOutputsMock;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,7 +16,7 @@ class EmailGeneratorTest {
     @ParameterizedTest
     @MethodSource("provideParameters")
     @DisplayName("should test if placeholders are replaced with provided values with Parametrized Tests")
-    public void shouldTestPlaceHolders(String name, Integer seatInRow) {
+    public void shouldTestPlaceHolders(String name, Integer seatInRow) throws ArgumentMissingForMailGeneratorException {
         String expected = "Hello Dear " + name + "!" + "\n" + "Your seat number is " + seatInRow;
         Assertions.assertEquals(expected, EmailGenerator.replacePlaceHoldersWithProvidedValue(name, seatInRow));
     }
@@ -47,5 +45,22 @@ class EmailGeneratorTest {
                     Assertions.assertEquals(GeneratedEmailsOutputsMock.output.get(entry.getKey()), generated);
                 }
         ));
+    }
+
+    @ParameterizedTest
+    @MethodSource("providedNullOrEmptyParameters")
+    @DisplayName("Throws exception if any argument is not provided")
+    public void shouldThrowException(String name, Integer seat) {
+        Assertions.assertThrows(ArgumentMissingForMailGeneratorException.class,
+                () -> EmailGenerator.replacePlaceHoldersWithProvidedValue(name, seat));
+    }
+
+
+    private static Stream<Arguments> providedNullOrEmptyParameters() {
+        return Stream.of(
+                Arguments.of("", 19),
+                Arguments.of(null, 20),
+                Arguments.of("Eka", null)
+        );
     }
 }
