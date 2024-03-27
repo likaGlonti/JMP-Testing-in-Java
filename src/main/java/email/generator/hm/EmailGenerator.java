@@ -1,8 +1,8 @@
 package email.generator.hm;
 
 public class EmailGenerator {
-    public static void replacePlaceHoldersWithProvidedValue(){
-        return;
+    public static String replacePlaceHoldersWithProvidedValue(){
+        return "";
     }
 
 }

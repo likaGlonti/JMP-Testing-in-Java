@@ -6,6 +6,6 @@ import org.junit.jupiter.api.Test;
 class EmailGeneratorTest {
     @Test
     public void shouldTestIfPlaceholdersAreReplacedWithProvidedValues() {
-        Assertions.assertTrue(EmailGenerator.replacePlaceHoldersWithProvidedValue());
+        Assertions.assertTrue(EmailGenerator.replacePlaceHoldersWithProvidedValue() == "Hello Dear mentee");
     }
 }
