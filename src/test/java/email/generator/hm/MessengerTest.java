@@ -11,4 +11,10 @@ public class MessengerTest {
         Messenger messenger = mock(Messenger.class);
         Assertions.assertInstanceOf(Messenger.class, messenger);
     }
+
+    @Test
+    public void shouldCreateMailServer(){
+        MailServer server = new MailServer();
+        Assertions.assertInstanceOf(MailServer.class, server);
+    }
 }
