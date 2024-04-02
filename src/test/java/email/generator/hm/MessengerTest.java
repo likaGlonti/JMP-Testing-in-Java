@@ -8,7 +8,7 @@ import static org.mockito.Mockito.*;
 public class MessengerTest {
     @Test
     public void shouldCreateMessenger() {
-        Messenger messenger = mock(Messenger.class);
+        Messenger messenger = new Messenger();
         Assertions.assertInstanceOf(Messenger.class, messenger);
     }
 
@@ -21,7 +21,7 @@ public class MessengerTest {
     @Test
     public void shouldTestIfMailServerSendsProvidedMail(){
         MailServer server = mock(MailServer.class);
-        Messenger messenger = new Messenger();
+        Messenger messenger = new Messenger(server);
         messenger.sendMail();
         verify(server).send();
     }
