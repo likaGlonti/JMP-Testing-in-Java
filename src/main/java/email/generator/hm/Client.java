@@ -5,4 +5,8 @@ public class Client {
     public Client(String mail) {
         this.mail = mail;
     }
+
+    public String getMail() {
+        return this.mail;
+    }
 }

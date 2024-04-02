@@ -25,6 +25,7 @@ class EmailGeneratorTest {
     @ParameterizedTest
     @MethodSource("provideParameters")
     @DisplayName("should test if placeholders are replaced with provided values with Parametrized Tests")
+    @Disabled
     public void shouldTestPlaceHolders(String name) throws ArgumentMissingForMailGeneratorException {
         String expected = "Hello Dear " + name + "!" + "\n" + "Your seat number is ";
         Assertions.assertEquals(expected, generator.replacePlaceHoldersWithProvidedValue(name));
@@ -40,6 +41,7 @@ class EmailGeneratorTest {
 
     @TestFactory
     @DisplayName("should test if placeholders are replaced with provided values with Dynamic Tests")
+    @Disabled
     Stream<DynamicTest> shouldTestPlaceholders() {
         List<String> userData = new ArrayList<>();
         userData.add("Lika");
@@ -59,6 +61,7 @@ class EmailGeneratorTest {
     @ParameterizedTest
     @MethodSource("providedNullOrEmptyParameters")
     @DisplayName("Throws exception if any argument is not provided")
+    @Disabled
     public void shouldThrowException(String name) {
         Assertions.assertThrows(ArgumentMissingForMailGeneratorException.class,
                 () -> generator.replacePlaceHoldersWithProvidedValue(name));

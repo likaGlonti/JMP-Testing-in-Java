@@ -21,7 +21,6 @@ public class MessengerTest {
     }
 
     @Test
-    @Disabled
     public void shouldTestIfMailServerSendsProvidedMail() throws ArgumentMissingForMailGeneratorException {
         MailServer server = mock(MailServer.class);
         Messenger messenger = new Messenger(server);
@@ -30,6 +29,7 @@ public class MessengerTest {
 
         when(client.getMail()).thenReturn(mail);
         when(generator.replacePlaceHoldersWithProvidedValue(mail)).thenReturn(message_content);
+
         messenger.sendMail(generator, client);
         verify(server).send(mail, message_content);
     }
