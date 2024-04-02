@@ -4,6 +4,7 @@ import email.generator.hm.exception.ArgumentMissingForMailGeneratorException;
 
 public class Messenger {
     private MailServer server;
+    private String sentContent;
 
     public Messenger(){}
 
@@ -12,6 +13,11 @@ public class Messenger {
     }
 
     public void sendMail(EmailGenerator generator, Client client) throws ArgumentMissingForMailGeneratorException {
-        server.send(client.getMail(), generator.replacePlaceHoldersWithProvidedValue(client.getMail()));
+        sentContent = generator.replacePlaceHoldersWithProvidedValue(client.getMail());
+        server.send(client.getMail(), sentContent);
+    }
+
+    public String getContent() {
+        return sentContent;
     }
 }
