@@ -2,12 +2,15 @@ package email.generator.hm;
 
 import email.generator.hm.exception.ArgumentMissingForMailGeneratorException;
 
+import java.util.UUID;
+
 public class EmailGenerator {
-    public static String replacePlaceHoldersWithProvidedValue(String name, Integer seat) throws ArgumentMissingForMailGeneratorException {
-        if (name == null || name.isEmpty() || seat == null) {
+    public String replacePlaceHoldersWithProvidedValue(String name) throws ArgumentMissingForMailGeneratorException {
+
+        if (name == null || name.isEmpty()) {
             throw new ArgumentMissingForMailGeneratorException("Arguments are missing, mail couldn't be generated");
         }
-        return String.format(placeHolder, name, seat);
+        return String.format(placeHolder, name);
     }
-    public static String placeHolder = "Hello Dear %s!\nYour seat number is %d";
+    public static String placeHolder = "Hello Dear %s!\nYour seat number is ...";
 }
