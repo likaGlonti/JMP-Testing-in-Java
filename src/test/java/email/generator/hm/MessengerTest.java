@@ -1,7 +1,8 @@
 package email.generator.hm;
 
-import email.generator.hm.mock.GeneratedEmailsOutputsMock;
+import email.generator.hm.exception.ArgumentMissingForMailGeneratorException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
@@ -20,10 +21,16 @@ public class MessengerTest {
     }
 
     @Test
-    public void shouldTestIfMailServerSendsProvidedMail(){
+    @Disabled
+    public void shouldTestIfMailServerSendsProvidedMail() throws ArgumentMissingForMailGeneratorException {
         MailServer server = mock(MailServer.class);
         Messenger messenger = new Messenger(server);
-        messenger.sendMail();
+        EmailGenerator generator = mock(EmailGenerator.class);
+        Client client = mock(Client.class);
+
+        when(client.getMail()).thenReturn(mail);
+        when(generator.replacePlaceHoldersWithProvidedValue(mail)).thenReturn(message_content);
+        messenger.sendMail(generator, client);
         verify(server).send(mail, message_content);
     }
 

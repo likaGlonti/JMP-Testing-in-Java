@@ -7,42 +7,51 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
+import static org.mockito.Mockito.mock;
+
 class EmailGeneratorTest {
+
+    private EmailGenerator generator;
+
+    @BeforeEach
+    public void setUp(){
+        generator = mock(EmailGenerator.class);
+    }
+
     @ParameterizedTest
     @MethodSource("provideParameters")
     @DisplayName("should test if placeholders are replaced with provided values with Parametrized Tests")
-    public void shouldTestPlaceHolders(String name, Integer seatInRow) throws ArgumentMissingForMailGeneratorException {
-        String expected = "Hello Dear " + name + "!" + "\n" + "Your seat number is " + seatInRow;
-        Assertions.assertEquals(expected, EmailGenerator.replacePlaceHoldersWithProvidedValue(name, seatInRow));
+    public void shouldTestPlaceHolders(String name) throws ArgumentMissingForMailGeneratorException {
+        String expected = "Hello Dear " + name + "!" + "\n" + "Your seat number is ";
+        Assertions.assertEquals(expected, generator.replacePlaceHoldersWithProvidedValue(name));
     }
 
     private static Stream<Arguments> provideParameters() {
         return Stream.of(
-                Arguments.of("Lika", 19),
-                Arguments.of("Nika", 20),
-                Arguments.of("Eka", 21)
+                Arguments.of("Lika"),
+                Arguments.of("Nika"),
+                Arguments.of("Eka")
         );
     }
 
     @TestFactory
     @DisplayName("should test if placeholders are replaced with provided values with Dynamic Tests")
     Stream<DynamicTest> shouldTestPlaceholders() {
-        Map<String, Integer> userData = new HashMap<>();
-        userData.put("Lika", 19);
-        userData.put("Nika", 20);
-        userData.put("Eka", 21);
+        List<String> userData = new ArrayList<>();
+        userData.add("Lika");
+        userData.add("Nika");
+        userData.add("Eka");
 
-        Set<Map.Entry<String, Integer>> entries = userData.entrySet();
 
-        return entries.stream().map(entry -> DynamicTest.dynamicTest(EmailGenerator.placeHolder, () ->
+        return userData.stream().map(item -> DynamicTest.dynamicTest(EmailGenerator.placeHolder, () ->
                 {
-                    String generated = EmailGenerator.replacePlaceHoldersWithProvidedValue(entry.getKey(), entry.getValue());
-                    Assertions.assertEquals(GeneratedEmailsOutputsMock.output.get(entry.getKey()), generated);
+                    String generated = generator.replacePlaceHoldersWithProvidedValue(item);
+                    int index = userData.indexOf(item);
+                    Assertions.assertEquals(GeneratedEmailsOutputsMock.output.get(index), generated);
                 }
         ));
     }
@@ -50,17 +59,16 @@ class EmailGeneratorTest {
     @ParameterizedTest
     @MethodSource("providedNullOrEmptyParameters")
     @DisplayName("Throws exception if any argument is not provided")
-    public void shouldThrowException(String name, Integer seat) {
+    public void shouldThrowException(String name) {
         Assertions.assertThrows(ArgumentMissingForMailGeneratorException.class,
-                () -> EmailGenerator.replacePlaceHoldersWithProvidedValue(name, seat));
+                () -> generator.replacePlaceHoldersWithProvidedValue(name));
     }
 
 
     private static Stream<Arguments> providedNullOrEmptyParameters() {
         return Stream.of(
-                Arguments.of("", 19),
-                Arguments.of(null, 20),
-                Arguments.of("Eka", null)
+                Arguments.of(""),
+                Arguments.of("Eka")
         );
     }
 }

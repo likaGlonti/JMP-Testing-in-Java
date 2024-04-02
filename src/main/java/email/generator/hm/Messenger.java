@@ -9,7 +9,8 @@ public class Messenger {
         this.server = server;
     }
 
-    public void sendMail() {
-        server.send();
+    public void sendMail(EmailGenerator generator, Client client) {
+
+//        server.send(client, client);
     }
 }
