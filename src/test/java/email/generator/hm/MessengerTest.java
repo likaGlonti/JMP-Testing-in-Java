@@ -9,7 +9,6 @@ public class MessengerTest {
     @Test
     public void shouldCreateMessenger() {
         Messenger messenger = mock(Messenger.class);
-
         Assertions.assertInstanceOf(Messenger.class, messenger);
     }
 }
